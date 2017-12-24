@@ -1,29 +1,33 @@
-        SUBROUTINE gaxpy (a, x, dx, y, dy, n)
+        SUBROUTINE gaxpy (a, dima, x, dx, y, dy, n)
                 ! Matrix A times vector x plus vector y - row version
                 ! GVL Algorithm 1.1.3
 
-                ! Input:        A, an n x n (square) matrix stored as
-                !                       a vector with n^2 entries
-                !               x,y real vectors of length n
-                ! Output:       Ax + y, stored in vector y
+                ! Input:        a       an n x n (square) matrix of doubles
+                !               dima    integer size of matrix A
+                !                       must be n or greater
+                !               x, y    vectors of doubles, length n
+                !               dx, dy  integer spacing between entries in
+                !                       each vector
+                !               n       integer number of entries in each vector
+                ! Output:       ax + y  stored in vector y
 
                 IMPLICIT none
-                DOUBLE PRECISION a(*), x(*), y(*)
-                INTEGER dx, dy, n
+                INTEGER dima, dx, dy, n
+                DOUBLE PRECISION a(dima, *), x(*), y(*)
 
                 ! Internal variables
-                INTEGER i, j                    ! index variables
-                INTEGER aoff, xoff, yoff        ! offset for vectors
+                INTEGER i, j            ! indices for row, column of matrix
+                INTEGER xi, yi          ! indices for vector entries
 
-                yoff = 1
+                yi = 1
                 DO i = 1,n
-                        xoff = 1
+                        xi = 1
+                        ! sum all the components for row i of the output vector
                         DO j = 1,n
-                                aoff = (i - 1) * n + j
-                                y(yoff) = y(yoff) + a(aoff) * x(xoff)
-                                xoff = xoff + dx
+                                y(yi) = y(yi) + a(i, j) * x(xi)
+                                xi = xi + dx
                         END DO
-                        yoff = yoff + dy
+                        yi = yi + dy
                 END DO
                 RETURN
         END SUBROUTINE

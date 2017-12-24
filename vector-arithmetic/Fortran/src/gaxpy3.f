@@ -1,27 +1,34 @@
-        SUBROUTINE gaxpy (a, x, dx, y, dy, n)
-                ! Matrix A times vector x plus vector y - row version
-                ! using a call to a level one operation
+        SUBROUTINE gaxpy (a, dima, x, dx, y, dy, n)
+                ! Matrix A times vector x plus vector y
+                ! row version calling Level 1 operation
                 ! GVL Algorithm 1.1.3
 
-                ! Input:        A, an n x n (square) matrix stored as
-                !                       a vector with n^2 entries
-                !               x,y real vectors of length n
-                ! Output:       Ax + y, stored in vector y
+                ! Input:        a       an n x n (square) matrix of doubles
+                !               dima    integer size of matrix A
+                !                       must be n or greater
+                !               x, y    vectors of doubles, length n
+                !               dx, dy  integer spacing between entries in
+                !                       each vector
+                !               n       integer number of entries in each vector
+                ! Output:       ax + y  stored in vector y
 
                 IMPLICIT none
-                DOUBLE PRECISION a(*), x(*), y(*)
+                INTEGER dima, dx, dy, n
+                DOUBLE PRECISION a(dima, *), x(*), y(*)
+
+                ! External function
                 DOUBLE PRECISION dtprod
-                INTEGER dx, dy, n
 
                 ! Internal variables
-                INTEGER i                  ! index variables
-                INTEGER aoff, yoff        ! offset for vectors
+                INTEGER i               ! index for row of matrix
+                INTEGER yi              ! index for vector entries
 
-                yoff = 1
+                yi = 1
                 DO i = 1,n
-                        aoff = (i - 1) * n + 1
-                        y(yoff) = y(yoff) + dtprod(a(aoff),1,x,dx,n)
-                        yoff = yoff + dy
+                        ! take the dot product of one row of a with vector
+                        ! x, add the result to output vector
+                        y(yi) = y(yi) + dtprod(a(i,1),dima,x,dx,n)
+                        yi = yi + dy
                 END DO
                 RETURN
         END SUBROUTINE

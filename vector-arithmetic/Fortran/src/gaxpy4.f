@@ -1,25 +1,31 @@
-        SUBROUTINE gaxpy (a, x, dx, y, dy, n)
-                ! Matrix A times vector x plus vector y - column version
-                ! using a call to a level one operation
-                ! GVL Algorithm 1.1.4
+        SUBROUTINE gaxpy (a, dima, x, dx, y, dy, n)
+                ! Matrix A times vector x plus vector y
+                ! column version calling Level 1 operation
+                ! GVL Algorithm 1.1.3
 
-                ! Input:        A, an n x n (square) matrix stored as
-                !                       a vector with n^2 entries
-                !               x,y real vectors of length n
-                ! Output:       Ax + y, stored in vector y
+                ! Input:        a       an n x n (square) matrix of doubles
+                !               dima    integer size of matrix A
+                !                       must be n or greater
+                !               x, y    vectors of doubles, length n
+                !               dx, dy  integer spacing between entries in
+                !                       each vector
+                !               n       integer number of entries in each vector
+                ! Output:       ax + y  stored in vector y
 
                 IMPLICIT none
-                DOUBLE PRECISION a(*), x(*), y(*)
-                INTEGER dx, dy, n
+                INTEGER dima, dx, dy, n
+                DOUBLE PRECISION a(dima, *), x(*), y(*)
 
                 ! Internal variables
-                INTEGER j                    ! index variables
-                INTEGER xoff       ! offset for vectors
+                INTEGER j               ! index for column of matrix
+                INTEGER xi              ! index for vector entries
 
-                xoff = 1
+                xi = 1
                 DO j = 1,n
-                        CALL saxpy(x(xoff), a(j), n, y, dy, n)
-                        xoff = xoff + dx
+                        ! add column j of matrix times its weight to the
+                        ! output vector
+                        CALL saxpy(x(xi), a(1, j), 1, y, dy, n)
+                        xi = xi + dx
                 END DO
                 RETURN
         END SUBROUTINE
