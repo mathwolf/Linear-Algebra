@@ -22,8 +22,8 @@
 
                 xi = 1
                 DO j = 1,n
-                        ! add column j of matrix times its weight to the
-                        ! output vector
+                        ! add column j of matrix a times its weight from
+                        ! entry j of vector x to output vector y
                         CALL saxpy(x(xi), a(1, j), 1, y, dy, n)
                         xi = xi + dx
                 END DO
