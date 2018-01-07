@@ -1,0 +1,131 @@
+A = zeros(64,64);
+for j = 1:63
+A(j,j) = 2.01;
+A(j+1,j) = -1;
+A(j,j+1) = -1;
+end
+A(64,64) = 2.01;
+b = A * ones(64,1);
+diary
+cg(A,b,30);
+After iteration 5
+
+error =
+
+     7.027058395715089e+00
+
+After iteration 10
+
+error =
+
+     5.085841700226834e+00
+
+After iteration 15
+
+error =
+
+     2.905925952519572e+00
+
+After iteration 20
+
+error =
+
+     1.495483148187828e+00
+
+After iteration 25
+
+error =
+
+     7.466034506248502e-01
+
+After iteration 30
+
+error =
+
+     3.268180637397757e-01
+
+diary
+M = zeros(64,64);
+for j = 1:64
+M(j,j) = 2;
+M(j+1,j) = -1;
+M(j,j+1) = -1;
+end
+M(64,64) = 2;
+pcg(A,b,M,10);
+{Error using <a href="matlab:helpUtils.errorDocCallback('mldivide')" style="font-weight:bold"> \ </a>
+Matrix dimensions must agree.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('pcg', 'C:\Users\Seamus\Documents\MATLAB\pcg.m', 9)" style="font-weight:bold">pcg</a> (<a href="matlab: opentoline('C:\Users\Seamus\Documents\MATLAB\pcg.m',9,0)">line 9</a>)
+z = M\r;
+} 
+diary
+M = zeros(64,64);
+for j = 1:63
+M(j,j) = 2;
+M(j+1,j) = -1;
+M(j,j+1) = -1;
+end
+M(64,64) = 2;
+pcg(A,b,M,10);
+After iteration 1
+
+error =
+
+     5.876590776036237e+02
+
+After iteration 2
+
+error =
+
+     5.865243245785883e+02
+
+After iteration 3
+
+error =
+
+     5.863366346565157e+02
+
+After iteration 4
+
+error =
+
+     5.863354473388712e+02
+
+After iteration 5
+
+error =
+
+     5.863354452746206e+02
+
+After iteration 6
+
+error =
+
+     5.863354452726409e+02
+
+After iteration 7
+
+error =
+
+     5.863354452750413e+02
+
+After iteration 8
+
+error =
+
+     5.863354452651951e+02
+
+After iteration 9
+
+error =
+
+     5.863354452731181e+02
+
+After iteration 10
+
+error =
+
+     5.863354452731087e+02
+
+diary
